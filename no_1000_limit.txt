@@ -1,0 +1,33 @@
+    @staticmethod
+    def findPath(mp, weight):
+        mp.path.append((0, 0))
+        # result = Marcher.findPath_helper(mp, weight, 0, 0, 0, 0, -1)
+        result = Marcher.findPath_helper(mp, weight, 0, 0, 0)
+        return result  # <-- Replace this with the cost of the least-energy path
+
+    #######################################################
+    # delete import time
+    @staticmethod
+    # def findPath_helper(mp, weight, energy, a, b, lx, ly):
+    def findPath_helper(mp, weight, energy, a, b):
+        # options = Marcher.possible_moves(mp, weight, a, b, lx, ly)
+        options = Marcher.possible_moves(mp, weight, a, b)
+        if (len(options) != 0):
+            for i in options:
+                energy = energy + i[0]
+                mp.path.append((i[1], i[2])) # permenent change
+                print (mp.path)
+                time.sleep(0.0001)
+                if (i[1] == (mp.sx - 1)) and (i[2] == (mp.sy - 1)):
+                    return energy
+                # x = Marcher.findPath_helper(mp, weight, energy, i[1], i[2], a, b)
+                x = Marcher.findPath_helper(mp, weight, energy, i[1], i[2])
+                if x != -1:
+                    return x
+                else:
+                    del mp.path[-1]
+                    energy = energy - i[0]
+            
+            return -1
+        else:
+            return -1

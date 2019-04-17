@@ -1,0 +1,33 @@
+Man sorry to bother but I prob dumb.
+
+Not initializing all to "inf" is definitely a huge improvement, which saved me a lot time when look up for min.
+
+I don't know if it's appropriate to just paste my code here but I feel my way of data storage is the problem why it takes so long. The bigmaze take extremely long time, I think my code makes a lot spins in the white area.
+
+Look how your code can make a curved path (left), my code makes all straight path, so mechnical, I don't know why
+
+I will state my logic and paste the code(if you don't want to look at the code, that's ok as long as you can help to point out my logic/data structure flaw).
+
+
+
+Logic: 
+
+1. three container, all empty to start with:
+
+    1) visited list: for nodes taken out already so they will never be visited again. Every time a min node is taken out, append to the end of the list;
+
+    2) energies dictionary: key is cell index, value is energy to reach it (distance not edge weight, meaning amount of energy needed to get to this cell from (0, 0)), it looks like {(1, 1): 2.3, (1, 2): 3.5 ......}, random order, not sorted by in any way;
+
+    3) pred dictionary: key and value are both cell index, value cell is the predecessor of the key cell
+
+2. set energies[(0, 0)] = 0 to start
+    while True:
+        (min_cell, min_val) = min(energies.items(), key=lambda k: k[1]) # get (min_key, min_val) pair
+        if min_cell is rightbottom corner, record min_val, break the while loop;
+        if not, delete energies[min_cell], append min_cell to visited
+        use possible_moves(mp, weight, a, b, visited) to get move options (neighbours)
+        loop through all move options, for each option: if not in the energies dictionary then add it to energies dictionary and set its value properly (value, pred); if the option is in energies, compare its corresponding value with (min_val + edge_weight) and update accordingly (value, pred)
+    after exit while loop, based on pred, create path for my.path
+3. possible_moves(mp, weight, a, b, visited): # try to get (a, b)'s available neighbours, return a list of (x, y, z) where x is the edge-weight associated with possible move (y, z) (list is not sorted in any way)
+    if (a, b) is not on the edge, calculate all possible move and associate energy, return the list
+    elif (a, b is on the edge), do the trick (although doesn't help much): when path hit right or left edges, don't allow to go up anymore; when path hit top or bottom edges, don't allow to go left anymore.
